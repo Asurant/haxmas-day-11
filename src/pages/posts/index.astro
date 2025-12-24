@@ -1,0 +1,42 @@
+---
+import { getCollection } from "astro:content";
+import FormattedDate from "../../components/FormattedDate.astro";
+
+import '../../styles/global.css';
+
+const posts = (await getCollection('blog')).sort(
+    (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+);
+
+const lastPostDate = posts[0]?.data.pubDate ?? null;
+
+const daysSinceLastPost = lastPostDate ? Math.floor((Date.now() - lastPostDate.getTime())/(1000*60*60*24)) : null;
+---
+
+<div class = "posts-page page-shell">
+    <header class = "page-header">
+        <h1>My Blog</h1>
+        <p class = "tagline">I currently have {posts.length} posts!</p>
+        <p class = "tagline">It has been {daysSinceLastPost} days since my last post</p>
+    </header>
+
+    {posts.length === 0 && <p class="empty">It appears that I need to lock in and start posting</p>}
+
+    <div class = "posts">
+        {posts.map((post) =>(
+            <article class = "post-card">
+                <a href={`/posts/${post.id}`} class = "title-link">
+                    {post.data.title}
+                </a>
+                <p class = "description">{post.data.description}</p>
+                <p class = "meta">
+                    Published on <FormattedDate date = {post.data.pubDate}/>
+                </p>
+            </article>
+        ))}
+        <a href = "/" class = "back-link">Back To Posts</a>
+
+    </div>
+</div>
+
+
