@@ -2,7 +2,7 @@
 
 This is a small blog site made using Astro.
 
-Changes from tutorial:
+Changes from tutorial:  
 Added a button allowing the user to go back to previous page  
 Added css for images.  
 
